@@ -6,6 +6,7 @@ import matchPath from './matchPath'
 /**
  * The public API for matching a single path and rendering.
  */
+//Route component that is being mounted, creates Component to render in render function
 class Route extends React.Component {
   static propTypes = {
     computedMatch: PropTypes.object, // private, from <Switch>
@@ -98,12 +99,16 @@ class Route extends React.Component {
     const { children, component, render } = this.props
     const { history, route, staticContext } = this.context.router
     const location = this.props.location || route.location
+    //props that are available on the rendered component
     const props = { match, location, history, staticContext }
 
     return (
+      //render the actual component
       component ? ( // component prop gets first priority, only called if there's a match
+        //create component with props
         match ? React.createElement(component, props) : null
       ) : render ? ( // render prop is next, only called if there's a match
+        //if component does not exist -> use render function to display componentn
         match ? render(props) : null
       ) : children ? ( // children come last, always called
         typeof children === 'function' ? (
